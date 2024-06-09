@@ -1,4 +1,4 @@
-# CaMS is a aviation system Capacity Monte-Carlo Siulator
+# CaMS is an aviation system Capacity Monte-Carlo Siulator
 This software is currently used to simulate runway capacity.
 However, it is not finished yet. Some functions are not functional. Will be improved in future.
 
