@@ -17,6 +17,7 @@ public class SettingInbound extends JDialog{
 
         listModel = new DefaultListModel<>();
         for (int i = 0; i < Util.Current.RouteCount; i++) {
+            if(Util.Current.Routes[i]!=null)
             listModel.addElement(Util.Current.Routes[i].toString());
         }
         
@@ -28,9 +29,11 @@ public class SettingInbound extends JDialog{
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 StringBuilder wps = new StringBuilder();
-                for (int i:routeList.getSelectedIndices()) {
-                    Util.Current.Inbound[i]=true;
-                    Util.Current.ins++;
+                Util.Current.InboundIdx=routeList.getSelectedIndices();
+                Util.Current.ins=routeList.getSelectedIndices().length;
+                for (int i:Util.Current.InboundIdx) {
+                    Util.Current.Inbound[i]=Util.Current.Routes[i].quotient;
+                    Util.Current.inq+=Util.Current.Routes[i].quotient;
                     wps.append(Util.Current.Routes[i].toString()).append(", ");
                 }
                 Util.status.Ins.setText(wps.toString());

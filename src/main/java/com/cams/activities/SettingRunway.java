@@ -8,16 +8,24 @@ import javax.swing.tree.TreePath;
 import com.cams.*;
 
 public class SettingRunway extends JDialog{
+    private final Runway wp;
+    private final JTextArea setname;
+    private final JTextArea setX;
+    private final JTextArea setY;
+    private final JTextArea setAngle;
+
     public SettingRunway(final Runway wp){
+        this.wp = wp;
         setTitle("Runway settings");
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/image/Setting.png")));
 
+        JButton Exit = new JButton ("Add Taxiway Port"); 
         JButton Save = new JButton ("Save"); 
         JButton delete = new JButton ("Delete");
-        final JTextArea setname = new JTextArea();  
-        final JTextArea setX = new JTextArea();
-        final JTextArea setY = new JTextArea();
-        final JTextArea setAngle = new JTextArea();
+        setname = new JTextArea();  
+        setX = new JTextArea();
+        setY = new JTextArea();
+        setAngle = new JTextArea();
 
         setname.setText(wp.getname());
         setname.setPreferredSize(new Dimension(80,16));
@@ -27,45 +35,73 @@ public class SettingRunway extends JDialog{
         setY.setPreferredSize(new Dimension(100,16));
         setAngle.setText(Double.toString(wp.getAngle()));
         setAngle.setPreferredSize(new Dimension(100,16));
-        Save.addMouseListener( new MouseAdapter(){  
+        
+        Exit.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e){  
-                wp.setPosition(Double.valueOf(setX.getText()),Double.valueOf(setY.getText()));
-                wp.setAngle(Double.valueOf(setAngle.getText()));
-                wp.setname(setname.getText());
-                setVisible(false);
-                Util.Map.repaint();
-                dispose();
-            }  
+            public void actionPerformed(ActionEvent e) {
+                exitAction();
+            }
         });
-        delete.addMouseListener( new MouseAdapter(){  
+
+        Save.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e){  
-                for(int i=0;i<Util.Current.RunwayCount;i++){
-                    if(Util.Current.Runways[i]==wp){
-                        Util.Tree.deleteRunway(wp);
-                        Util.Current.Runways[i]=null;
-                        setVisible(false);
-                        Util.Map.repaint();
-                        dispose();
-                    }
-                }
-            }  
+            public void actionPerformed(ActionEvent e) {
+                saveAction();
+            }
         });
+        
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteAction();
+            }
+        });
+
         this.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        add( new JLabel ("Runway name:"));
+        add(new JLabel("Runway name:"));
         add(setname);
-        add( new JLabel ("X position:"));
+        add(new JLabel("X position:"));
         add(setX);
-        add( new JLabel ("Y position:"));
+        add(new JLabel("Y position:"));
         add(setY);
-        add( new JLabel ("Angle:"));
+        add(new JLabel("Angle:"));
         add(setAngle);
+        add(Exit);
         add(delete);
         add(Save);
         setSize(200,200);
         setLocation(200,200);
         setVisible(true);
         setAlwaysOnTop(true);
+    }
+
+    private void saveAction(){
+        try {
+            wp.setPosition(Double.valueOf(setX.getText()), Double.valueOf(setY.getText()));
+            wp.setAngle(Double.valueOf(setAngle.getText()));
+            wp.setname(setname.getText());
+            setVisible(false);
+            Util.Map.repaint();
+            dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid input! Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void deleteAction(){
+        for(int i = 0; i < Util.Current.RunwayCount; i++) {
+            if(Util.Current.Runways[i] == wp) {
+                Util.Tree.deleteRunway(wp);
+                Util.Current.Runways[i] = null;
+                setVisible(false);
+                Util.Map.repaint();
+                dispose();
+                break;
+            }
+        }
+    }
+
+    private void exitAction(){
+        
     }
 }

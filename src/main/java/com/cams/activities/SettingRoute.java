@@ -12,6 +12,11 @@ public class SettingRoute extends JDialog{
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/image/Setting.png")));
         final JTextArea[] setwp = new JTextArea[1000];
         this.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        final JTextArea setname = new JTextArea();  
+        setname.setText(wp.getname());
+        setname.setPreferredSize(new Dimension(80,16));
+        add( new JLabel ("Runway name:"));
+        add(setname);
         JButton Save = new JButton ("Save");
         JButton delete = new JButton ("Delete");
         int[] idw=wp.getWaypoints();
@@ -31,6 +36,7 @@ public class SettingRoute extends JDialog{
                     wps[i]=Integer.valueOf(setwp[i].getText());
                 }
                 wp.setWaypoints(wps);
+                wp.setname(setname.getText());
                 setVisible(false);
                 Util.Map.repaint();
                 dispose();
@@ -43,6 +49,9 @@ public class SettingRoute extends JDialog{
                     if(Util.Current.Routes[i]==wp){
                         Util.Tree.deleteRoute(wp);
                         Util.Current.Routes[i]=null;
+                        for(int j=i;j<Util.Current.RouteCount;j++){
+                            Util.Current.Routes[j]=Util.Current.Routes[j+1];
+                        }
                         setVisible(false);
                         Util.Map.repaint();
                         dispose();
@@ -50,6 +59,7 @@ public class SettingRoute extends JDialog{
                 }
             }  
         });
+        
         add(delete);
         add(Save);
         setSize(200,150);

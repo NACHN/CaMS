@@ -5,7 +5,8 @@ public class Route {
     private int[] Waypoints=new int[1000];
     private int wpc=0;
     private String name;
-    
+    public double quotient=1;
+
     public Route(int wp){
         Waypoints[wpc]=wp;
         wpc++;
@@ -32,6 +33,9 @@ public class Route {
     }
     public String getname(){
         return name;
+    }
+    public void setname(String n){
+        this.name=n;
     }
     public void setWaypoints(int[] in){
         Waypoints=in;

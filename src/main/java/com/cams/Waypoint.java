@@ -6,7 +6,13 @@ public class Waypoint{
     private double Coord_N;
     private double Coord_E;
     private String name;
+    /**
+     * 0 for Default
+     * 1 for Runway FAF
+     * 2 for Runway IF
+     */
     private int type=0;
+    private int belongsto;
     
     public Waypoint(Point Coord){
         Coord_N=Coord.getY();
@@ -18,9 +24,20 @@ public class Waypoint{
     public Waypoint(Point Coord,int t){
         Coord_N=Coord.getY();
         Coord_E=Coord.getX();
-        name="RunwayFAF"+Integer.toString(Util.Current.WaypointCount);
+        if(t==1)name="RunwayFAF"+Integer.toString(Util.Current.WaypointCount);
+        else if(t==2)name="RunwayIF"+Integer.toString(Util.Current.WaypointCount);
         Util.Tree.newWaypoint(this);
         type=t;
+        Util.Current.WaypointCount++;
+    }
+    public Waypoint(Point Coord,int t,int belong){
+        Coord_N=Coord.getY();
+        Coord_E=Coord.getX();
+        if(t==1)name="RunwayFAF"+Integer.toString(Util.Current.WaypointCount);
+        else if(t==2)name="RunwayIF"+Integer.toString(Util.Current.WaypointCount);
+        Util.Tree.newWaypoint(this);
+        type=t;
+        belongsto=belong;
         Util.Current.WaypointCount++;
     }
     public Point getPosition(){
@@ -32,6 +49,13 @@ public class Waypoint{
     public String getName(){
         return name;
     }
+    public void setname(String n){
+        name=n;
+    }
+
+    public int getbelong(){
+        return belongsto;
+    }
     public double getX(){
         return Coord_E;
     }
@@ -39,7 +63,7 @@ public class Waypoint{
     public double getY(){
         return Coord_N;
     }
-    public double getType(){
+    public int getType(){
         return type;
     }
     public void setPosition(double x, double y){

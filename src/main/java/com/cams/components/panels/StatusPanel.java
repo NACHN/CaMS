@@ -6,13 +6,14 @@ import java.awt.*;
 import com.cams.*;
 
 public class StatusPanel extends JPanel{
+    public JLabel mission = new JLabel("Mission status");
     JLabel In = new JLabel("进港路由：");
     public JLabel Ins = new JLabel();
     JLabel Out = new JLabel("离港路由：");
     public JLabel Outs = new JLabel();
     public StatusPanel(){
         
-        JLabel mission = new JLabel("Mission status");
+        
         Util.status=this;
         add(mission);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

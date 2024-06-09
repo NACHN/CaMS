@@ -11,7 +11,9 @@ public class DrawRunway{
         
         
         g2d.rotate(Math.toRadians(angle));
-
+        g2d.setColor(new Color(0,255,0,64));
+        g2d.drawOval(-(int)(40000*DrawingFactor)/2,-(int)(40000*DrawingFactor)/2,(int)(40000*DrawingFactor),(int)(40000*DrawingFactor));
+        g2d.setColor(Color.GREEN);
         int runwayWidth = (int)(runway.getSize().x*DrawingFactor);
         int runwayHeight = (int)(runway.getSize().y*DrawingFactor);
         if(runwayHeight==0)runwayHeight=1;
@@ -27,6 +29,18 @@ public class DrawRunway{
 
         int entrypoint2=(int)(runway.Length/2+runway.ENTRY2)*100/Util.scalar;
         xPoints = new int[]{entrypoint2, entrypoint2+5, entrypoint2+5};
+        yPoints = new int[]{0, 5, -5};
+        triangle = new Polygon(yPoints, xPoints, 3); 
+        g2d.draw(triangle);
+
+        int if1=(int)(-runway.Length/2-runway.IF1)*100/Util.scalar;
+        xPoints = new int[]{if1, if1-5, if1-5};
+        yPoints = new int[]{0, 5, -5};
+        triangle = new Polygon(yPoints, xPoints, 3); 
+        g2d.draw(triangle);
+
+        int if2=(int)(runway.Length/2+runway.IF2)*100/Util.scalar;
+        xPoints = new int[]{if2, if2+5, if2+5};
         yPoints = new int[]{0, 5, -5};
         triangle = new Polygon(yPoints, xPoints, 3); 
         g2d.draw(triangle);

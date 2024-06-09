@@ -17,6 +17,7 @@ public class SettingOutbound extends JDialog{
 
         listModel = new DefaultListModel<>();
         for (int i = 0; i < Util.Current.RouteCount; i++) {
+            if(Util.Current.Routes[i]!=null)
             listModel.addElement(Util.Current.Routes[i].toString());
         }
         
@@ -28,9 +29,11 @@ public class SettingOutbound extends JDialog{
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 StringBuilder wps = new StringBuilder();
+                Util.Current.OutboundIdx=routeList.getSelectedIndices();
+                Util.Current.outs=routeList.getSelectedIndices().length;
                 for (int i:routeList.getSelectedIndices()) {
-                    Util.Current.Outbound[i]=true;
-                    Util.Current.outs++;
+                    Util.Current.Outbound[i]=Util.Current.Routes[i].quotient;
+                    Util.Current.outq+=Util.Current.Routes[i].quotient;
                     wps.append(Util.Current.Routes[i].toString()).append(", ");
                 }
                 Util.status.Outs.setText(wps.toString());
