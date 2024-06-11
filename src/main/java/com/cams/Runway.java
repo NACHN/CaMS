@@ -5,6 +5,9 @@ import java.awt.*;
 public class Runway{
     private double Coord_N;
     private double Coord_E;
+    private double Height=1012;
+    public double MDA1=1065;
+    public double MDA2=1072;
     public int Width=45;
     public int Length=2800;
     private double Angle=133;
@@ -42,22 +45,23 @@ public class Runway{
         Coord.x+=Math.sin(Math.toRadians(Angle))*(ENTRY1+Length/2);
         Coord.y-=Math.cos(Math.toRadians(Angle))*(ENTRY1+Length/2);
         Util.Current.Waypoints[Util.Current.WaypointCount]=new Waypoint(Coord, 1,Util.Current.RunwayCount);
-        System.out.println(Util.Current.WaypointCount);
-        System.out.println(Util.Current.Waypoints[Util.Current.WaypointCount]);
         EN1= Util.Current.Waypoints[Util.Current.WaypointCount-1];
+        EN1.Direction=Angle+180;
+        EN1.height=1700;
 
         Coord=Ori.getLocation();
         Coord.x+=Math.sin(Math.toRadians(Angle))*(-ENTRY2-Length/2);
         Coord.y-=Math.cos(Math.toRadians(Angle))*(-ENTRY2-Length/2);
         Util.Current.Waypoints[Util.Current.WaypointCount]=new Waypoint(Coord, 1,Util.Current.RunwayCount);
         EN2= Util.Current.Waypoints[Util.Current.WaypointCount-1];
+        EN2.Direction=Angle;
+        EN2.height=1500;
 
         Coord=Ori.getLocation();
         Coord.x+=Math.sin(Math.toRadians(Angle))*(IF1+Length/2);
         Coord.y-=Math.cos(Math.toRadians(Angle))*(IF1+Length/2);
         Util.Current.Waypoints[Util.Current.WaypointCount]=new Waypoint(Coord, 2,Util.Current.RunwayCount);
-        System.out.println(Util.Current.WaypointCount);
-        System.out.println(Util.Current.Waypoints[Util.Current.WaypointCount]);
+
         WIF1= Util.Current.Waypoints[Util.Current.WaypointCount-1];
 
         Coord=Ori.getLocation();
@@ -67,6 +71,19 @@ public class Runway{
         WIF2= Util.Current.Waypoints[Util.Current.WaypointCount-1];
 
         Util.Current.RunwayCount++;
+        exit[0]=-Length/2;
+        exit[1]=Length/2;
+        exit[2]=120;
+        exit[3]=400;
+        exit[4]=600;
+        exit[5]=-1145;
+        exitType[0]=0;
+        exitType[1]=0;
+        exitType[2]=9;
+        exitType[3]=9;
+        exitType[4]=9;
+        exitType[5]=0;
+        exitCount=6;
     }
 
     public void setPosition(double x, double y){
@@ -92,10 +109,12 @@ public class Runway{
         Coord.x+=Math.sin(Math.toRadians(Angle))*(ENTRY1+Length/2);
         Coord.y-=Math.cos(Math.toRadians(Angle))*(ENTRY1+Length/2);
         EN1.setPosition(Coord.x, Coord.y);
+        EN1.Direction=180+Angle;
         Coord=Ori.getLocation();
         Coord.x+=Math.sin(Math.toRadians(Angle))*(-ENTRY2-Length/2);
         Coord.y-=Math.cos(Math.toRadians(Angle))*(-ENTRY2-Length/2);
         EN2.setPosition(Coord.x, Coord.y);
+        EN2.Direction=Angle;
     }
 
     void setSize(int x, int y){
@@ -169,5 +188,13 @@ public class Runway{
     @Override
     public String toString() {
         return name;
+    }
+
+    public double getHeight() {
+        return Height;
+    }
+
+    public void setHeight(double h) {
+        Height=h;
     }
 }

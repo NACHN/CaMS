@@ -21,10 +21,11 @@ public class SimulationPanel extends JPanel {
     JButton ClearInbound = new JButton("清除进港");
     JButton Outbound = new JButton("离港设置");
     JButton ClearOutbound = new JButton("清除离港");
+    JButton AircraftTypes = new JButton("机型设置");
     public JLabel tips = new JLabel("请首先设置进离港路由");
     public JButton StartSim = new JButton("开始模拟");
     JLabel SpeedL = new JLabel("模拟速度：");
-    JSlider Speed = new JSlider(JSlider.HORIZONTAL, 0, 1000, 1);
+    JSlider Speed = new JSlider(JSlider.HORIZONTAL, 0, 1000, 100);
 
     public SimulationPanel() {
         JLabel settingsLabel = new JLabel("Simulation Settings");
@@ -65,13 +66,13 @@ public class SimulationPanel extends JPanel {
         add(ClearInbound);
         add(Outbound);
         add(ClearOutbound);
+        add(AircraftTypes);
         add(tips);
         add(StartSim);
         add(SpeedL);
         add(Speed);
         StartSim.setEnabled(false);
-        setVisible(false);
-        setVisible(true);
+
         Inbound.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,6 +108,13 @@ public class SimulationPanel extends JPanel {
             }
         });
 
+        AircraftTypes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SettingAircraftTypes();
+            }
+        });
+
         StartSim.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,36 +132,54 @@ public class SimulationPanel extends JPanel {
                     System.out.println("Selected value: " + value);
                     switch (value) {
                         case 0:
-                            // Env.timer.stop();
+                            Env.timer.stop();
                             break;
                         case 100:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(1000);
                             break;
                         case 200:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(500);
                             break;
                         case 300:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(200);
                             break;
                         case 400:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(100);
                             break;
                         case 500:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(50);
                             break;
                         case 600:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(20);
                             break;
                         case 700:
                             Env.timer.setDelay(10);
                             break;
                         case 800:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(5);
                             break;
                         case 900:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(2);
                             break;
                         case 1000:
+                            if (!Env.timer.isRunning())
+                                Env.timer.start();
                             Env.timer.setDelay(1);
                             break;
                         default:
@@ -162,5 +188,10 @@ public class SimulationPanel extends JPanel {
                 }
             }
         });
+
+        setVisible(false);
+        setVisible(true);
     }
+
+    
 }

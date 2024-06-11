@@ -35,6 +35,10 @@ public class SimulationEnvironment {
     public ArrayList<Integer> Arrival = new ArrayList<>();
     public ArrayList<Integer> Departure = new ArrayList<>();
 
+    public boolean[] selectedHeavy={true,true,true,true};
+    public boolean[] selectedMedium={true,true,true,true};
+    public boolean[] selectedLight={true,true,true};
+
     /**
      * Constructor for new simulation environment
      */
@@ -61,21 +65,31 @@ public class SimulationEnvironment {
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Math.random() > 0.5)
+                //New aircraft
+                if (Math.random() > 0.5){
                     mission.newRandomAircraft();
+                }
+                    
                 simulationTime++;
-                System.out.println("Time:" + simulationTime);
-                Util.status.mission.setText("Running at: " + simulationTime + " s.");
+                //System.out.println("Time:" + simulationTime);
+                Util.status.mission.setText("Running at: " + simulationTime + " s. Simulated flights: "+ mission.getCurrentFlight());
                 Util.status.repaint();
+
+                //Simulate aircraft
                 for (Aircraft aircraft : Aircrafts) {
+                    if(aircraft.getstatus()==3)continue;
                     Waypoint from=aircraft.getfrom();
                     Waypoint to=aircraft.getto();
-                    switch (aircraft.getstatus()) {
+                    int status=aircraft.getstatus();
+                    int dir=1;
+                    if(status>10)status/=10;
+                    switch (status) {
                         case 0:
                             aircraft.navigate(from, to);
                             break;
                         case 1:
-                            aircraft.landing(Runways[to.getbelong()]);
+                            if(aircraft.getHeading()==Runways[to.getbelong()].getAngle())dir=2;
+                            aircraft.landing(Runways[to.getbelong()],dir);
                             break;
                         case 2:
                             aircraft.takeoff(Runways[from.getbelong()]);

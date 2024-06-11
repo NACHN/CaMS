@@ -13,6 +13,8 @@ public class Waypoint{
      */
     private int type=0;
     private int belongsto;
+    public double Direction=0;
+    public double height=2400;
     
     public Waypoint(Point Coord){
         Coord_N=Coord.getY();

@@ -12,6 +12,7 @@ public class SettingRunway extends JDialog{
     private final JTextArea setname;
     private final JTextArea setX;
     private final JTextArea setY;
+    private final JTextArea setH;
     private final JTextArea setAngle;
 
     public SettingRunway(final Runway wp){
@@ -25,6 +26,7 @@ public class SettingRunway extends JDialog{
         setname = new JTextArea();  
         setX = new JTextArea();
         setY = new JTextArea();
+        setH = new JTextArea();
         setAngle = new JTextArea();
 
         setname.setText(wp.getname());
@@ -33,6 +35,8 @@ public class SettingRunway extends JDialog{
         setX.setPreferredSize(new Dimension(100,16));
         setY.setText(Double.toString(wp.getY()));
         setY.setPreferredSize(new Dimension(100,16));
+        setH.setText(Double.toString(wp.getHeight()));
+        setH.setPreferredSize(new Dimension(100,16));
         setAngle.setText(Double.toString(wp.getAngle()));
         setAngle.setPreferredSize(new Dimension(100,16));
         
@@ -64,12 +68,14 @@ public class SettingRunway extends JDialog{
         add(setX);
         add(new JLabel("Y position:"));
         add(setY);
+        add(new JLabel("Elevation:"));
+        add(setH);
         add(new JLabel("Angle:"));
         add(setAngle);
         add(Exit);
         add(delete);
         add(Save);
-        setSize(200,200);
+        setSize(200,240);
         setLocation(200,200);
         setVisible(true);
         setAlwaysOnTop(true);
@@ -78,6 +84,7 @@ public class SettingRunway extends JDialog{
     private void saveAction(){
         try {
             wp.setPosition(Double.valueOf(setX.getText()), Double.valueOf(setY.getText()));
+            wp.setHeight(Double.valueOf(setH.getText()));
             wp.setAngle(Double.valueOf(setAngle.getText()));
             wp.setname(setname.getText());
             setVisible(false);

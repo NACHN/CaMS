@@ -313,13 +313,20 @@ public class MapPanel extends JPanel {
                 }
             if (Util.Current.Aircrafts != null && !Util.Current.Aircrafts.isEmpty()) {
                 for (Aircraft aircraft : Util.Current.Aircrafts) {
+                    if(aircraft.getstatus()==3)continue;
                     g.setColor(Color.RED);
-                    System.out.println(aircraft.getname());
+                    //System.out.println(aircraft.getname());
                     Graphics2D g2d = (Graphics2D) g.create();
                     g2d.translate((-offX + aircraft.getX()) * DrawingFactor,
                             (-offY + aircraft.getY()) * DrawingFactor);
                     
-                    g2d.drawString(aircraft.getname(), 5, -12); // 显示飞机名称
+                    g2d.drawString(aircraft.getname(), 5, -60); // 显示飞机名称
+                    g2d.drawString(aircraft.gettype(), 5, -48);
+                    double H360=aircraft.getHeading();
+                    if(H360<0)H360+=360;
+                    g2d.drawString("HDG "+(int)H360, 5, -36);
+                    g2d.drawString("TAS "+Integer.toString((int)aircraft.getSpeed()), 5, -24);
+                    g2d.drawString("ALT "+Integer.toString((int)aircraft.getHeight()), 5, -12);
                     g2d.rotate(Math.toRadians(aircraft.getHeading()));
                     g2d.drawImage(Util.plane,-10,-10,20,20,null); // 绘制飞机的位置
                     g2d.dispose();

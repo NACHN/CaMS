@@ -1,11 +1,14 @@
 package com.cams;
 
+import com.cams.logic.Aircraft;
+
 public class Route {
     private int sequence=0;
     private int[] Waypoints=new int[1000];
     private int wpc=0;
     private String name;
     public double quotient=1;
+    public Aircraft preceed;
 
     public Route(int wp){
         Waypoints[wpc]=wp;

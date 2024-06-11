@@ -50,8 +50,14 @@ public class DrawRunway{
         g2d.setStroke(dashedStroke);
         g2d.drawLine(0,0,0,entrypoint1);
         g2d.drawLine(0,0,0,entrypoint2);
+        g2d.setStroke(new BasicStroke(1));
         
         g2d.drawString(runway.nameENTRY1, 0, entrypoint1);
         g2d.drawString(runway.nameENTRY2, 0, entrypoint2);
+        if(Util.scalar<=2000)
+        for(int i=0;i<runway.exitCount;i++){
+            g2d.drawString("Exit "+Integer.toString(i), -runwayWidth/2-64, runway.exit[i]*100/Util.scalar);
+            g2d.drawLine(-runwayWidth/2-8, runway.exit[i]*100/Util.scalar, 0, runway.exit[i]*100/Util.scalar);
+        }
     }
 }
