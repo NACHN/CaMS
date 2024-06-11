@@ -1,6 +1,29 @@
-# CaMS is a aviation system Capacity Monte-Carlo Siulator
-This software is currently used to simulate runway capacity.
+# CaMS - Capacity Monte-Carlo Simulator
 
-## Need JAVA Runtime or JDK environment to run .jar
+CaMS (Capacity Monte-Carlo Simulator) is a software designed for simulating airport capacity. It is currently focused on simulating runway capacity, with plans to expand its functionality in the future.
 
-### Program&Art by:NACHN
+**Currently, only visualized navigation actions are available.**
+
+## Future Features:
+
+- Landing and Takeoff simulations
+- Multi-language support (English)
+- Save and load simulation environments
+- Aircraft maneuvers based on performance
+
+本软件用于模拟机场容量，目前尚未完成，持续更新中
+
+**当前仅有路点导航飞行的可视化**
+
+## 未来功能：
+
+- 降落/起飞动作
+- 语言支持
+- 保存/加载仿真环境
+- 基于飞机性能的航空器动作
+
+## Requirements:
+
+To run the .jar file, you need to have Java Runtime Environment (JRE) or Java Development Kit (JDK) installed.
+
+### Program & Art by: NACHN
