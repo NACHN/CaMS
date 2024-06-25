@@ -7,9 +7,14 @@ CaMS (Capacity Monte-Carlo Simulator) is a software designed for simulating airp
 ## Future Features:
 
 - Landing and Takeoff simulations
+- Add/Edit runway exit and threshold
+- Aircraft type proportion configuration
+- Arrival/Departure rate configuration
+- Payload effect
+- Separation specific configuration
+- Output simulation result
 - Multi-language support (English)
 - Save and load simulation environments
-- Aircraft maneuvers based on performance
 
 本软件用于模拟机场容量，目前尚未完成，持续更新中
 
@@ -18,9 +23,14 @@ CaMS (Capacity Monte-Carlo Simulator) is a software designed for simulating airp
 ## 未来功能：
 
 - 降落/起飞动作
+- 增加/编辑跑道出入口
+- 机型比例设定
+- 到达/离场率设定
+- 加入业载影响
+- 间隔细节设定
+- 输出仿真结果
 - 语言支持
 - 保存/加载仿真环境
-- 基于飞机性能的航空器动作
 
 ## Requirements:
 
