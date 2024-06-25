@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.xml.bind.annotation.*;
 import com.cams.logic.*;
 
 public class SimulationEnvironment {
@@ -65,45 +64,53 @@ public class SimulationEnvironment {
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //New aircraft
-                if (Math.random() > 0.5){
-                    mission.newRandomAircraft();
-                }
-                    
-                simulationTime++;
-                //System.out.println("Time:" + simulationTime);
-                Util.status.mission.setText("Running at: " + simulationTime + " s. Simulated flights: "+ mission.getCurrentFlight());
-                Util.status.repaint();
-
-                //Simulate aircraft
-                for (Aircraft aircraft : Aircrafts) {
-                    if(aircraft.getstatus()==3)continue;
-                    Waypoint from=aircraft.getfrom();
-                    Waypoint to=aircraft.getto();
-                    int status=aircraft.getstatus();
-                    int dir=1;
-                    if(status>10)status/=10;
-                    switch (status) {
-                        case 0:
-                            aircraft.navigate(from, to);
-                            break;
-                        case 1:
-                            if(aircraft.getHeading()==Runways[to.getbelong()].getAngle())dir=2;
-                            aircraft.landing(Runways[to.getbelong()],dir);
-                            break;
-                        case 2:
-                            aircraft.takeoff(Runways[from.getbelong()]);
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
+                NewAircraft();
                 if (mission.isDone())
                     timer.stop();
             }
         });
         if (!mission.isDone())
             timer.start();
+    }
+
+    public void NewAircraft(){
+        //New aircraft
+        if (Math.random() > 0.5){
+            mission.newRandomAircraft();
+        }
+            
+        simulationTime++;
+        //System.out.println("Time:" + simulationTime);
+        Util.status.mission.setText("Running at: " + simulationTime + " s. Simulated flights: "+ mission.getCurrentFlight());
+        Util.status.repaint();
+
+        //Simulate aircraft
+        for (Aircraft aircraft : Aircrafts) {
+            if(aircraft.getstatus()==3)continue;
+            Waypoint from=aircraft.getfrom();
+            Waypoint to=aircraft.getto();
+            int status=aircraft.getstatus();
+            int dir=1;
+            if(status>10)status/=10;
+            switch (status) {
+                case 0:
+                    aircraft.navigate(from, to);
+                    break;
+                case 1:
+                    if(aircraft.getHeading()==Runways[to.getbelong()].getAngle())dir=2;
+                    aircraft.landing(Runways[to.getbelong()],dir);
+                    break;
+                case 2:
+                    dir=2;
+                    if(aircraft.getHeading()==Runways[to.getbelong()].getAngle())dir=1;
+                    if(from==null)
+                    aircraft.takeoff(Runways[to.getbelong()],dir);
+                    else  aircraft.takeoff(Runways[from.getbelong()],dir);
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 }

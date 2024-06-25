@@ -2,8 +2,11 @@ package com.cams;
 import javax.swing.*;
 
 import com.cams.languages.*;
-
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.awt.*;
+import java.io.*;
+
 
 public class MainInterface extends JFrame{
     int WindowWidth=1280;
@@ -23,10 +26,15 @@ public class MainInterface extends JFrame{
     public static void main(String[] args){
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            String NowDateTime = LocalDateTime.now().format(formatter);
+            Util.outs = new FileOutputStream("Out_"+NowDateTime+".csv",true);
+            PrintStream printStream = new PrintStream(Util.outs);
+            System.setOut(printStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
         Font defaultFont = new Font("Arial", Font.PLAIN, 14); // 替换为你想要的字体
         UIManager.put("Button.font", defaultFont); // 按钮字体
         UIManager.put("Label.font", defaultFont); // 标签字体

@@ -325,7 +325,8 @@ public class MapPanel extends JPanel {
                     double H360=aircraft.getHeading();
                     if(H360<0)H360+=360;
                     g2d.drawString("HDG "+(int)H360, 5, -36);
-                    g2d.drawString("TAS "+Integer.toString((int)aircraft.getSpeed()), 5, -24);
+                    if(aircraft.getstatus()/10==1||aircraft.getstatus()==1) g2d.drawString("IAS "+Integer.toString((int)aircraft.getSpeed()), 5, -24);
+                    else g2d.drawString("TAS "+Integer.toString((int)aircraft.getSpeed()), 5, -24);
                     g2d.drawString("ALT "+Integer.toString((int)aircraft.getHeight()), 5, -12);
                     g2d.rotate(Math.toRadians(aircraft.getHeading()));
                     g2d.drawImage(Util.plane,-10,-10,20,20,null); // 绘制飞机的位置

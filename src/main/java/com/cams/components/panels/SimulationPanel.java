@@ -7,8 +7,6 @@ import java.util.Hashtable;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import org.omg.CORBA.Environment;
-
 import com.cams.*;
 import com.cams.activities.*;
 import com.cams.logic.*;
@@ -26,6 +24,7 @@ public class SimulationPanel extends JPanel {
     public JButton StartSim = new JButton("开始模拟");
     JLabel SpeedL = new JLabel("模拟速度：");
     JSlider Speed = new JSlider(JSlider.HORIZONTAL, 0, 1000, 100);
+    JButton QuickSim = new JButton("立即完成");
 
     public SimulationPanel() {
         JLabel settingsLabel = new JLabel("Simulation Settings");
@@ -71,7 +70,9 @@ public class SimulationPanel extends JPanel {
         add(StartSim);
         add(SpeedL);
         add(Speed);
+        add(QuickSim);
         StartSim.setEnabled(false);
+        QuickSim.setEnabled(false);
 
         Inbound.addActionListener(new ActionListener() {
             @Override
@@ -118,6 +119,7 @@ public class SimulationPanel extends JPanel {
         StartSim.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                QuickSim.setEnabled(true);
                 new Mission();
             }
         });
@@ -129,7 +131,7 @@ public class SimulationPanel extends JPanel {
                 SimulationEnvironment Env = Util.Current;
                 if (!source.getValueIsAdjusting()) {
                     int value = source.getValue();
-                    System.out.println("Selected value: " + value);
+                    //System.out.println("Timer speed: " + value/100);
                     switch (value) {
                         case 0:
                             Env.timer.stop();
@@ -186,6 +188,16 @@ public class SimulationPanel extends JPanel {
                             break;
                     }
                 }
+            }
+        });
+
+        QuickSim.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Speed.setEnabled(false);
+                Util.Current.timer.stop();
+                while(!Util.Current.mission.isDone())
+                    Util.Current.NewAircraft();
             }
         });
 

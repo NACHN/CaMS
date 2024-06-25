@@ -1,5 +1,7 @@
 package com.cams.logic;
 
+import java.io.*;
+
 import com.cams.*;
 
 public class Mission {
@@ -20,42 +22,47 @@ public class Mission {
         if (Math.random() < 0.5)
             isInbound = true;
         String type;
-        double dis=Double.MAX_VALUE;
-        String gettype="NULL";
+        double dis = Double.MAX_VALUE;
+        int s = Integer.MAX_VALUE;
+        String gettype = "NULL";
         if (isInbound) {
-            // System.out.println(Env.ins);
             int inSeq = (int) (Math.random() * Env.ins);
-            // System.out.println(inSeq);
             int inIdx = Env.InboundIdx[inSeq];
             Route i = Env.Routes[inIdx];
             int BasicType = (int) (Math.random() * 3);
-            
-            type=randomtype(BasicType);
-            if(i.preceed!=null){
-                gettype=i.preceed.gettype();
-                double dx=i.preceed.getX()-Env.Waypoints[i.getWaypoints()[0]].getX();
-                double dy=i.preceed.getY()-Env.Waypoints[i.getWaypoints()[0]].getY();
-                dis=Math.sqrt(dx*dx+dy*dy);
+
+            type = randomtype(BasicType);
+            if (i.preceed != null) {
+                gettype = i.preceed.gettype();
+                double dx = i.preceed.getX() - Env.Waypoints[i.getWaypoints()[0]].getX();
+                double dy = i.preceed.getY() - Env.Waypoints[i.getWaypoints()[0]].getY();
+                dis = Math.sqrt(dx * dx + dy * dy);
+                s = Env.simulationTime - i.preceedtime;
             }
-            if (Env.Runways[0].PermissiontoUse()&&Util.separationCheck(dis,gettype,type))
-                i.preceed=new Aircraft(Env, i, true, type);
-            flights++;
+            if (Env.Runways[0].PermissiontoUse() && Util.separationCheck(dis, gettype, type)
+                    && Util.separationCheck(s, gettype, gettype)) {
+                i.preceed = new Aircraft(Env, i, true, type);
+                i.preceedtime = Env.simulationTime;
+                flights++;
+            }
         } else {
             int outSeq = (int) (Math.random() * Env.outs);
             int outIdx = Env.OutboundIdx[outSeq];
             Route i = Env.Routes[outIdx];
             int BasicType = (int) (Math.random() * 3);
 
-            type=randomtype(BasicType);
-            if(i.preceed!=null){
-                gettype=i.preceed.gettype();
-                double dx=i.preceed.getX()-Env.Waypoints[i.getWaypoints()[0]].getX();
-                double dy=i.preceed.getY()-Env.Waypoints[i.getWaypoints()[0]].getY();
-                dis=Math.sqrt(dx*dx+dy*dy);
+            type = randomtype(BasicType);
+
+            if (i.preceed != null) {
+                gettype = i.preceed.gettype();
+                double dx = i.preceed.getX() - Env.Waypoints[i.getWaypoints()[0]].getX();
+                double dy = i.preceed.getY() - Env.Waypoints[i.getWaypoints()[0]].getY();
+                dis = Math.sqrt(dx * dx + dy * dy);
             }
-            if (Env.Runways[0].PermissiontoUse()&&Util.separationCheck(dis,gettype,type))
-                i.preceed=new Aircraft(Env, i, false, type);
-            flights++;
+            if (Env.Runways[0].PermissiontoUse() && Util.separationCheck(dis, gettype, type)) {
+                i.preceed = new Aircraft(Env, i, false, type);
+                flights++;
+            }
         }
         if (flights == Env.Times - 1)
             done = true;

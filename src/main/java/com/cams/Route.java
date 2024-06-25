@@ -9,6 +9,7 @@ public class Route {
     private String name;
     public double quotient=1;
     public Aircraft preceed;
+    public int preceedtime;
 
     public Route(int wp){
         Waypoints[wpc]=wp;

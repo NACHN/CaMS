@@ -2,6 +2,8 @@ package com.cams;
 
 import java.awt.*;
 
+import com.cams.logic.Aircraft;
+
 public class Runway{
     private double Coord_N;
     private double Coord_E;
@@ -23,7 +25,10 @@ public class Runway{
     public Waypoint EN2;
     public Waypoint WIF1;
     public Waypoint WIF2;
-    private boolean inuse=false;
+    private boolean inlanding=false;
+    private boolean intakeoff=false;
+
+    private Aircraft inuse=null;
 
     public int[] exit=new int[100];
     /**
@@ -34,6 +39,8 @@ public class Runway{
      */
     public int[] exitType=new int[100];
     public int exitCount=0;
+    public boolean[] isThreshold=new boolean[100];
+    public boolean[] isTakeoff=new boolean[100];
     
     public Runway(Point Coord){
         Point Ori=Coord.getLocation();
@@ -83,6 +90,10 @@ public class Runway{
         exitType[3]=9;
         exitType[4]=9;
         exitType[5]=0;
+        isThreshold[3]=true;
+        isThreshold[4]=true;
+        isTakeoff[0]=true;
+        isTakeoff[1]=true;
         exitCount=6;
     }
 
@@ -150,17 +161,34 @@ public class Runway{
     }
 
     public boolean PermissiontoUse(){
-        return inuse?false:true;
+        //System.out.println(inlanding+" "+intakeoff);
+        return inuse==null ? true:false;
     }
 
-    public void clearRunway(){
-        inuse=false;
+    public void aircraftUsing(Aircraft a){
+        inuse = a;
     }
 
-    public void useRunway(){
-        inuse=true;
+    public void clearUse(Aircraft a){
+        if(inuse==a)
+            inuse = null;
     }
 
+    public void clearLanding(){
+        inlanding=false;
+    }
+
+    public void executeLanding(){
+        inlanding=true;
+    }
+
+    public void clearTakeoff(){
+        intakeoff=false;
+    }
+
+    public void executeTakeoff(){
+        intakeoff=true;
+    }
     public void delete(){
         
     }

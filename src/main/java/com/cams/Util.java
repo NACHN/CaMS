@@ -2,6 +2,7 @@ package com.cams;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import com.cams.components.panels.*;
 import com.cams.components.trees.*;
 import com.cams.activities.*;
@@ -24,10 +25,11 @@ public class Util {
      * v0.3: Optimize user experience and display status
      * v0.4: Navigation visualization
      * v0.5: Aircraft perdormance
-     * -v0.6: Landing & Takeoff
+     * v0.6: Landing & Takeoff
+     * v0.7: Output simulation results
      * -v0.8: Save and Load simulation environment
      */
-    public static String Version = "0.5";
+    public static String Version = "0.7";
     /**
      * Default 100px for 1000m
      */
@@ -49,6 +51,8 @@ public class Util {
     public static String[] Heavy = { "A345", "A388", "B744", "B788" };
     public static String[] Medium = { "A20N", "A320", "B38M", "B738" };
     public static String[] Light = { "AC11", "AC95", "PA32" };
+
+    public static FileOutputStream outs;
 
     double[] NED2LLH(double[] Coord) {
 
@@ -77,18 +81,7 @@ public class Util {
     }
 
     public static double getRunwayROD(double s) {
-        if (s <= 41.6)
-            return -2.2;
-        else if (s <= 51.3)
-            return -2.7;
-        else if (s <= 61.1)
-            return -3.2;
-        else if (s <= 72.2)
-            return -3.8;
-        else if (s <= 81.9)
-            return -4.3;
-        else
-            return -4.9;
+        return -s/19;
     }
 
     public static double DisttoExit(Runway rw,Aircraft air,int e){
@@ -112,7 +105,53 @@ public class Util {
             return Math.abs(dis-rw.exit[e]);
         }
     }
-
+    public static boolean separationCheck(int s,String gettype, String type){
+        /**
+         * 0 for Heavy
+         * 1 for A380-800
+         * 2 for Medium
+         * 3 for Light
+         */
+        int s1 = -1;
+        int s2 = -1;
+        for (String i : Util.Heavy) {
+            if (gettype == i) {
+                if (i == "A388")
+                    s1 = 1;
+                else
+                    s1 = 0;
+            }
+            if (type == i) {
+                if (i == "A388")
+                    s2 = 1;
+                else
+                    s2 = 0;
+            }
+        }
+        for (String i : Util.Medium) {
+            if (gettype == i) {
+                s1 = 2;
+            }
+            if (type == i) {
+                s2 = 2;
+            }
+        }
+        for (String i : Util.Light) {
+            if (gettype == i) {
+                s1 = 3;
+            }
+            if (type == i) {
+                s2 = 3;
+            }
+        }
+        int interval = 1;  // 默认1分钟
+        if ((s1 == 0 && s2 == 2) || (s1 == 2 && s2 == 0) || (s1 == 0 && s2 == 3) || (s1 == 3 && s2 == 0) || (s1 == 2 && s2 == 3) || (s1 == 3 && s2 == 2)) {
+            interval = 3;  // 飞机类型为重型、中型或轻型时的间隔时间为3分钟
+        } else if ((s1 == 1 && (s2 == 2 || s2 == 3)) || (s2 == 1 && (s1 == 2 || s1 == 3))) {
+            interval = 4;  // 飞机类型包括A380-800时的间隔时间为4分钟
+        }
+        return s>interval*60;
+    }
     public static boolean separationCheck(double dis, String gettype, String type) {
         /**
          * 0 for Heavy
